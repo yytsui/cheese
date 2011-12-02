@@ -14,10 +14,18 @@ NEWSPIDER_MODULE = 'cheese.spiders'
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 
 #http://www.useragentstring.com/pages/useragentstring.php
+#http://snippets.scrapy.org/snippets/27/
 USER_AGENT_LIST = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:9.0) Gecko/20100101 Firefox/9.0',
         'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0a2) Gecko/20110613 Firefox/6.0a2',
         'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.36 Safari/535.7'
+]
+
+#http://groups.google.com/group/scrapy-users/browse_thread/thread/997f5dd39a9c670f
+FREE_PROXY_LIST = [
+        '202.171.253.103',
+        '216.64.210.28',
+        '108.3.215.174'
 ]
 
 DOWNLOADER_MIDDLEWARES = {
