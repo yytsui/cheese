@@ -1,4 +1,5 @@
-from cheese.settings import USER_AGENT_LIST, FREE_PROXY_LIST
+from cheese.settings import FREE_PROXY_LIST
+from cheese.user_agents_list import USER_AGENT_LIST
 import random
 from scrapy import log
 

@@ -16,6 +16,7 @@ class YtowerSpider(CrawlSpider):
         #hxs = HtmlXPathSelector(response)
         #i = CheeseItem()
         print "l"*10, response.url
+        print "h"*10, response.headers
         #i['domain_id'] = hxs.select('//input[@id="sid"]/@value').extract()
         #i['name'] = hxs.select('//div[@id="name"]').extract()
         #i['description'] = hxs.select('//div[@id="description"]').extract()
