@@ -5,15 +5,11 @@ from cheese.items import CheeseItem
 
 class YtowerSpider(CrawlSpider):
     name = 'ytower'
-    #allowed_domains = ['ytower.com.tw']
     start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
 
     rules = (
-            #Rule(SgmlLinkExtractor(allow=r'/recipe-search2.asp?\.+'), callback='parse_item', follow=True),
             Rule(SgmlLinkExtractor(allow=r'recipe-search2.asp'), callback='parse_list', follow=True),
             Rule(SgmlLinkExtractor(allow=r'iframe-recipe.asp'), callback='parse_detail', follow=True),
-            #Rule(SgmlLinkExtractor(restrict_xpaths='/html/body/table[2]/tbody/tr/td/table'), callback='parse_item', follow=False),
-            #Rule(SgmlLinkExtractor(), callback='parse_item', follow=True),
     )
 
     def parse_list(self, response):
