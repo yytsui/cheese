@@ -22,6 +22,7 @@ USER_AGENT_LIST = [
 ]
 
 #http://groups.google.com/group/scrapy-users/browse_thread/thread/997f5dd39a9c670f
+#http://hidemyass.com/proxy-list/
 FREE_PROXY_LIST = [
         '202.171.253.103',
         '216.64.210.28',
