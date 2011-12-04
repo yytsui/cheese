@@ -28,6 +28,10 @@ class YtowerSpider(CrawlSpider):
     def parse(self, response):
         url = response.url
         hxs = HtmlXPathSelector(response)
+
+        title = hxs.select('//span[@class="mv15pt80bk01"]/text()').extract()[0].strip()
+        print "title=>%s" % title
+
         trs = hxs.select('//td[@width="200"]/table/tr')
         for tr in trs:
             ele = tr.root # lxml element
