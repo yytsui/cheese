@@ -55,6 +55,22 @@ class IcooktwSpider(CrawlSpider):
             amount = ele.find('.//span[@itemprop="amount"]')
             print amount.text
 
+        ululs = hxs.select('//ul[@itemprop="ingredient"]/ul')
+        if ululs is not None:
+            for ul in ululs:
+                _ul = ul.root
+                section_name = _ul.find('.//li[@class="group-name"]').text
+                print "section_name => %s" % section_name
+                print "-"*50
+                for ele in _ul.findall('.//li/div'):
+                    ing = ele.find('.//span[@itemprop="name"]')
+                    print ing.text
+                    amount = ele.find('.//span[@itemprop="amount"]')
+                    print amount.text
+                print "-"*50
+
+
+
         lis = hxs.select('//ul[@itemprop="instructions"]/li')
         for li in lis:
             lele = li.root
