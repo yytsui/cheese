@@ -16,7 +16,9 @@ def stringify_children(node):
 class IcooktwSpider(CrawlSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
-    start_urls = ['http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116']
+    start_urls = ['http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116',
+            'http://icook.tw/recipes/15124'
+            ]
 
     """
     rules = (
