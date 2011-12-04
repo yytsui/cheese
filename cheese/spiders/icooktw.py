@@ -4,6 +4,15 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from cheese.items import CheeseItem
 
+def stringify_children(node):
+    #http://stackoverflow.com/questions/4624062/get-all-text-inside-a-tag-in-lxml
+    from itertools import chain
+    parts = ([node.text] +
+            list(chain(*([c.text, c.tail] for c in node.getchildren()))) +
+            [node.tail])
+    # filter removes possible Nones in texts and tails
+    return ''.join(filter(None, parts))
+
 class IcooktwSpider(CrawlSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
@@ -52,7 +61,7 @@ class IcooktwSpider(CrawlSpider):
             order = lele.find('.//big')
             print order.text
             instruction = lele.find('.//p/span[@class="step-img"]')
-            if instruction:
+            if instruction is not None:
                 print "instruction => %s" % instruction.tail.strip()
                 big_picture = instruction.find('a').attrib['href']
                 print "big_picture => %s" % big_picture
@@ -60,5 +69,5 @@ class IcooktwSpider(CrawlSpider):
                 print "small_picture => %s" % small_picture
             else:
                 text_only_instruction = lele.find('.//p')
-                print "instruction => %s" % text_only_instruction.text
+                print "instruction => %s" % stringify_children(text_only_instruction).strip()
 
