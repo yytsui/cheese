@@ -1,10 +1,7 @@
-from cheese.settings import FREE_PROXY_LIST
 from cheese.user_agents_list import USER_AGENT_LIST
 import random
 from scrapy import log
-import urllib
 from lxml import etree
-import StringIO
 
 def get_free_proxy():
     url =  "http://hidemyass.com/proxy-list/search-225783/"
@@ -21,16 +18,17 @@ def get_free_proxy():
         proxies.append(http_proxy)
     return proxies
 
-class RandomUserAgentMiddleware(object):
-    
+class RandomUserAgentProxyMiddleware(object):
+    count = 0
     def process_request(self, request, spider):
         ua  = random.choice(USER_AGENT_LIST)
         if ua:
             request.headers.setdefault('User-Agent', ua)
-        proxy = random.choice(FREE_PROXY_LIST)
-        request.meta['proxy'] = 'http://%s' % proxy
-        #request.meta['proxy'] = 'http://64.90.59.115'
-        #log.msg('>>>> UA %s'%request.headers)
+        if self.count % 200 == 0:
+            free_proxy = random.choice(get_free_proxy())
+            request.meta['proxy'] = free_proxy
+            log.msg("Change proxy to %s" % free_proxy, log.INFO)
+        self.count += 1
 
 if __name__ == '__main__':
     print get_free_proxy()
