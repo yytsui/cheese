@@ -17,7 +17,7 @@ class IcooktwSpider(CrawlSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
     start_urls = ['http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116',
-            'http://icook.tw/recipes/15124'
+            'http://icook.tw/recipes/15124', 'http://icook.tw/recipes/15074'
             ]
 
     """
@@ -80,7 +80,7 @@ class IcooktwSpider(CrawlSpider):
             print order.text
             instruction = lele.find('.//p/span[@class="step-img"]')
             if instruction is not None:
-                print "instruction => %s" % instruction.tail.strip()
+                print "instruction => %s" % stringify_children(lele.find('.//p')).strip()
                 big_picture = instruction.find('a').attrib['href']
                 print "big_picture => %s" % big_picture
                 small_picture = instruction.find('.//img').attrib['src']
