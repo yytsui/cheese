@@ -87,3 +87,20 @@ class IcooktwSpider(CrawlSpider):
                 text_only_instruction = lele.find('.//p')
                 print "instruction => %s" % stringify_children(text_only_instruction).strip()
 
+        view_count = hxs.select('//span[@class="view-count"]/text()').extract()
+        if view_count:
+            print "view_count => %s" % view_count[0]
+        fav_count = hxs.select('//span[@class="fav-count"]/text()').extract()
+        if fav_count:
+            print "fav_count => %s" % fav_count[0]
+
+        tags = hxs.select('//div[@class="section list-of-recipes"]/ul/li/a/text()').extract()
+        print "l"*30, len(tags)
+        if tags:
+            for tag in tags:
+                if len(tag.strip()) > 0:
+                    print "tag => %s" % tag.strip()
+
+        author = hxs.select('//span[@itemprop="author"]/text()').extract()
+        if author:
+            print "author => %s" % author[0]
