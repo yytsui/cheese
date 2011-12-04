@@ -28,15 +28,23 @@ class YtowerSpider(CrawlSpider):
     def parse(self, response):
         url = response.url
         hxs = HtmlXPathSelector(response)
+        trs = hxs.select('//td[@width="200"]/table/tr')
+        for tr in trs:
+            ele = tr.root # lxml element
+            section =  ele.find('.//td[@colspan="2"]/font')
+            ing = ele.find('.//td[@width="68%"]/a[@class="sh13pt_link"]')
+            amount = ele.find('.//td[@width="32%"]')
+            if section is not None:
+                print section.text
+            if ing is not None:
+                print ing.text
+            if amount is not None:
+                print amount.text
+
         img = hxs.select('//td[@height="25"]/img[@width="210"]/@src').extract()
-        ings = hxs.select('//table/tr/td[@class="sh13pt"]/a[@class="sh13pt_link"]/text()').extract() #ingredients
         steps = hxs.select('//span[@class="sh13pt"]/text()').extract() #step
-        for t in hxs.select('//table/tr/td[@colspan="2"]/font/text()').extract(): #section
-            print t.strip()
-        for i in ings:
-            print i
-        #print "uuuuuuuuuuuuuuuu %s %s %s" %(url,img,ings)
+        print img[0]
         for s in steps:
             print s
-        print img
+        print "url=>%s" % url
 
