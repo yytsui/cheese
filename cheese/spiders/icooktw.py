@@ -7,7 +7,7 @@ from cheese.items import CheeseItem
 class IcooktwSpider(CrawlSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
-    start_urls = ['http://icook.tw/recipes/15075']
+    start_urls = ['http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116']
 
     """
     rules = (
@@ -51,10 +51,14 @@ class IcooktwSpider(CrawlSpider):
             lele = li.root
             order = lele.find('.//big')
             print order.text
-            instruction = lele.find('.//p/span')
-            print "instruction => %s" % instruction.tail.strip()
-            big_picture = instruction.find('a').attrib['href']
-            print "big_picture => %s" % big_picture
-            small_picture = instruction.find('.//img').attrib['src']
-            print "small_picture => %s" % small_picture
+            instruction = lele.find('.//p/span[@class="step-img"]')
+            if instruction:
+                print "instruction => %s" % instruction.tail.strip()
+                big_picture = instruction.find('a').attrib['href']
+                print "big_picture => %s" % big_picture
+                small_picture = instruction.find('.//img').attrib['src']
+                print "small_picture => %s" % small_picture
+            else:
+                text_only_instruction = lele.find('.//p')
+                print "instruction => %s" % text_only_instruction.text
 
