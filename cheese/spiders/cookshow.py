@@ -68,6 +68,20 @@ class CookShowSpider(CrawlSpider):
             if amount is not None:
                 print amount.text
 
+        steptrs = hxs.select('//table[@class="box-cooklist-step"]/tr')
+        print len(steptrs)
+
+        for tr in steptrs:
+            _tr = tr.root
+            step_img = _tr.find('.//img[@class="pp-cooktop3"]')
+            if step_img is not None:
+                print step_img.attrib['src']
+            step_text = _tr.find('.//td[@class="text08-12-bw"]')
+            if step_text is not None:
+                print step_text.text
+
+
+
         """
         ululs = hxs.select('//ul[@itemprop="ingredient"]/ul')
         if ululs is not None:
