@@ -3,6 +3,7 @@ from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from cheese.items import CheeseItem
+from base import BaseSpider
 
 def stringify_children(node):
     #http://stackoverflow.com/questions/4624062/get-all-text-inside-a-tag-in-lxml
@@ -13,7 +14,13 @@ def stringify_children(node):
     # filter removes possible Nones in texts and tails
     return ''.join(filter(None, parts))
 
-class IcooktwSpider(CrawlSpider):
+def get_text_or_none(ele):
+    if ele is not None:
+        return ele.text
+    else:
+        return None
+
+class IcooktwSpider(BaseSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
     start_urls = [
@@ -30,20 +37,126 @@ class IcooktwSpider(CrawlSpider):
     """
 
     def parse_list(self, response):
-        #hxs = HtmlXPathSelector(response)
-        #i = CheeseItem()
-        #i['domain_id'] = hxs.select('//input[@id="sid"]/@value').extract()
-        #i['name'] = hxs.select('//div[@id="name"]').extract()
-        #i['description'] = hxs.select('//div[@id="description"]').extract()
-        #return i
-        pass
+       pass
 
-    #def parse_detail(self, response):
+    @property
+    def title(self):
+        return self.hxs.select('//h2[@itemprop="name"]/a/text()').extract()[0]
+
+    @property
+    def main_picture(self):
+        _main_pic = self.hxs.select('//img[@class="main-pic"]/@src').extract()
+        if _main_pic:
+            main_pic = _main_pic[0]
+        else:
+            main_pic = None
+        return main_pic
+
+
+    @property
+    def ingredients(self):
+        ingdivs = self.hxs.select('//ul[@itemprop="ingredient"]/li/div')
+        ingredients = []
+        ings_1 = []
+        for idiv in ingdivs:
+            ele = idiv.root
+            ing = ele.find('.//span[@itemprop="name"]')
+            ing_name = get_text_or_none(ing)
+            amount = ele.find('.//span[@itemprop="amount"]')
+            ing_amout = get_text_or_none(amount)
+            ings_1.append(dict(name=ing_name, amount=ing_amout))
+        ingredients.append(dict(section_name='principal', ings=ings_1))
+
+        ululs = self.hxs.select('//ul[@itemprop="ingredient"]/ul')
+        if ululs is not None:
+            for ul in ululs:
+                _ul = ul.root
+                section_name = _ul.find('.//li[@class="group-name"]').text
+                ings = []
+                for ele in _ul.findall('.//li/div'):
+                    ing = ele.find('.//span[@itemprop="name"]')
+                    ing_name = get_text_or_none(ing)
+                    amount = ele.find('.//span[@itemprop="amount"]')
+                    ing_amout = get_text_or_none(ing)
+                    ings.append(dict(name=ing_name, amount=ing_amout))
+                ingredients.append(dict(section_name=section_name, ings=ings))
+
+        return ingredients
+
+    @property
+    def steps(self):
+        lis = self.hxs.select('//ul[@itemprop="instructions"]/li')
+        steps = []
+        for li in lis:
+            lele = li.root
+            order = lele.find('.//big')
+            instruction = lele.find('.//p/span[@class="step-img"]')
+            if instruction is not None:
+                step =  stringify_children(lele.find('.//p')).strip()
+                big_picture = instruction.find('a').attrib['href']
+                small_picture = instruction.find('.//img').attrib['src']
+            else:
+                #text only instruction
+                text_only_instruction = lele.find('.//p')
+                if text_only_instruction is not None:
+                    step = stringify_children(text_only_instruction).strip()
+                big_picture = None
+                small_picture = None
+        steps.append(dict(order=order, step=step, big_picture=big_picture, small_picture=small_picture))
+        return steps
+
+
+
+    @property
+    def tags(self):
+        tags = self.hxs.select('//div[@class="section list-of-recipes"]/ul/li/a/text()').extract()
+        _tags = []
+        if tags:
+            for tag in tags:
+                if len(tag.strip()) > 0:
+                    _tags.append(tag.strip())
+        return _tags
+
+    @property
+    def author(self):
+        author = self.hxs.select('//span[@itemprop="author"]/text()').extract()
+        if author:
+            return author[0]
+        else:
+            return None
+
+
+    @property
+    def view_count(self):
+        view_count = self.hxs.select('//span[@class="view-count"]/text()').extract()
+        if view_count:
+           return view_count[0]
+        else:
+           return None
+ 
+
+    @property
+    def fav_count(self):
+        fav_count = self.hxs.select('//span[@class="fav-count"]/text()').extract()
+        if fav_count:
+            return fav_count[0]
+        else:
+            return None
+
+    @property
+    def comments(self):
+        return None
+
+    @property
+    def misc_text(self):
+        return None
+
+
+    """
     def parse(self, response):
         url = response.url
         print "url=>%s" % url
         hxs = HtmlXPathSelector(response)
-        title = hxs.select('//h2[@itemprop="name"]/a/text()').extract()[0]
         print "title=>%s" % title
 
         _main_pic = hxs.select('//img[@class="main-pic"]/@src').extract()
@@ -110,3 +223,4 @@ class IcooktwSpider(CrawlSpider):
             print "author => %s" % author[0]
 
         #TODO: number of comments
+        """

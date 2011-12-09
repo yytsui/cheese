@@ -57,7 +57,8 @@ class BaseSpider(CrawlSpider):
 
     @property
     def recipe(self):
-        return dict(title=self.title,
+        return dict(url=self.url,
+                    title=self.title,
                     main_picture=self.main_picture,
                     ingredients=self.ingredients,
                     steps=self.steps,
