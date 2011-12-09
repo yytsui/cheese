@@ -3,29 +3,7 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from cheese.items import CheeseItem
 from base import BaseSpider
-
-def stringify_children(node):
-    #http://stackoverflow.com/questions/4624062/get-all-text-inside-a-tag-in-lxml
-    from itertools import chain
-    parts = ([node.text] +
-            list(chain(*([c.text, c.tail] for c in node.getchildren()))) +
-            [node.tail])
-    # filter removes possible Nones in texts and tails
-    return ''.join(filter(None, parts))
-
-def get_text_or_none(ele):
-    if ele is not None:
-        return ele.text
-    else:
-        return None
-
-def get_first_text_or_none(hxs , xpath):
-    texts = hxs.select(xpath).extract()
-    if texts:
-        return texts[0]
-    else:
-        return None
-
+from cheese.utils import stringify_children, get_text_or_none
 
 class IcooktwSpider(BaseSpider):
     name = 'icooktw'
@@ -48,11 +26,11 @@ class IcooktwSpider(BaseSpider):
 
     @property
     def title(self):
-        return get_first_text_or_none(self.hxs, '//h2[@itemprop="name"]/a/text()')
+        return self.get_first_text('//h2[@itemprop="name"]/a/text()')
 
     @property
     def main_picture(self):
-        return get_first_text_or_none(self.hxs, '//img[@class="main-pic"]/@src')
+        return self.get_first_text('//img[@class="main-pic"]/@src')
 
     @property
     def ingredients(self):
@@ -120,16 +98,15 @@ class IcooktwSpider(BaseSpider):
 
     @property
     def author(self):
-        return get_first_text_or_none(self.hxs, '//span[@itemprop="author"]/text()')
+        return self.get_first_text('//span[@itemprop="author"]/text()')
 
     @property
     def view_count(self):
-        return get_first_text_or_none(self.hxs, '//span[@class="view-count"]/text()')
- 
+        return self.get_first_text('//span[@class="view-count"]/text()')
 
     @property
     def fav_count(self):
-        return get_first_text_or_none(self.hxs, '//span[@class="fav-count"]/text()')
+        return self.get_first_text('//span[@class="fav-count"]/text()')
 
     @property
     def comments(self):

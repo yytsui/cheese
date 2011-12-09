@@ -1,19 +1,7 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.spiders import CrawlSpider
 
-#http://www.quora.com/How-do-you-print-a-python-unicode-data-structure
-import pprint
-
-
-class MyPP(pprint.PrettyPrinter):
-    def format(self, object, context, maxlevels, level):
-        ret = pprint.PrettyPrinter.format(self, object, context, maxlevels, level)
-        if isinstance(object, unicode):
-            ret = (object.encode('utf-8'), ret[1], ret[2])
-        return ret
-
-mypp = MyPP()
-
+from cheese.utils import get_first_text_or_none, unicode_pprint
 
 class NotImplementError(Exception):
     pass
@@ -83,7 +71,11 @@ class BaseSpider(CrawlSpider):
                     misc_text=self.misc_text
                 )
 
+    def get_first_text(self, xpath):
+        return get_first_text_or_none(self.hxs, xpath)
+
+
     def parse(self, response):
         self._on_receive_html(response)
-        mypp.pprint(self.recipe)
+        unicode_pprint.pprint(self.recipe)
 
