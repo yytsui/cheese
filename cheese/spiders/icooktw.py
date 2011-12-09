@@ -1,4 +1,3 @@
-
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
@@ -19,6 +18,14 @@ def get_text_or_none(ele):
         return ele.text
     else:
         return None
+
+def get_first_text_or_none(hxs , xpath):
+    texts = hxs.select(xpath).extract()
+    if texts:
+        return texts[0]
+    else:
+        return None
+
 
 class IcooktwSpider(BaseSpider):
     name = 'icooktw'
@@ -41,17 +48,11 @@ class IcooktwSpider(BaseSpider):
 
     @property
     def title(self):
-        return self.hxs.select('//h2[@itemprop="name"]/a/text()').extract()[0]
+        return get_first_text_or_none(self.hxs, '//h2[@itemprop="name"]/a/text()')
 
     @property
     def main_picture(self):
-        _main_pic = self.hxs.select('//img[@class="main-pic"]/@src').extract()
-        if _main_pic:
-            main_pic = _main_pic[0]
-        else:
-            main_pic = None
-        return main_pic
-
+        return get_first_text_or_none(self.hxs, '//img[@class="main-pic"]/@src')
 
     @property
     def ingredients(self):
@@ -119,29 +120,16 @@ class IcooktwSpider(BaseSpider):
 
     @property
     def author(self):
-        author = self.hxs.select('//span[@itemprop="author"]/text()').extract()
-        if author:
-            return author[0]
-        else:
-            return None
-
+        return get_first_text_or_none(self.hxs, '//span[@itemprop="author"]/text()')
 
     @property
     def view_count(self):
-        view_count = self.hxs.select('//span[@class="view-count"]/text()').extract()
-        if view_count:
-           return view_count[0]
-        else:
-           return None
+        return get_first_text_or_none(self.hxs, '//span[@class="view-count"]/text()')
  
 
     @property
     def fav_count(self):
-        fav_count = self.hxs.select('//span[@class="fav-count"]/text()').extract()
-        if fav_count:
-            return fav_count[0]
-        else:
-            return None
+        return get_first_text_or_none(self.hxs, '//span[@class="fav-count"]/text()')
 
     @property
     def comments(self):
