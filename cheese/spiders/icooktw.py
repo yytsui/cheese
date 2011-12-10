@@ -67,7 +67,7 @@ class IcooktwSpider(BaseSpider):
         steps = []
         for li in lis:
             lele = li.root
-            order = lele.find('.//big')
+            order = lele.find('.//big').text
             instruction = lele.find('.//p/span[@class="step-img"]')
             if instruction is not None:
                 step =  stringify_children(lele.find('.//p')).strip()
