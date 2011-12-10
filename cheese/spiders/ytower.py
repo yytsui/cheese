@@ -1,7 +1,6 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
-from cheese.items import CheeseItem
 
 class YtowerSpider(CrawlSpider):
     name = 'ytower'

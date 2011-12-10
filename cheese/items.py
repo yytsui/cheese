@@ -5,7 +5,17 @@
 
 from scrapy.item import Item, Field
 
-class CheeseItem(Item):
+class RecipeItem(Item):
     # define the fields for your item here like:
     # name = Field()
-    pass
+    url = Field()
+    title = Field()
+    main_picture = Field()
+    ingredients = Field()
+    steps = Field()
+    tags = Field()
+    author = Field()
+    view_count = Field()
+    fav_count = Field()
+    comments = Field()
+    misc_text = Field()

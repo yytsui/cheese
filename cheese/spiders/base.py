@@ -1,7 +1,8 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.spiders import CrawlSpider
 
-from cheese.utils import get_first_text_or_none, unicode_pprint
+from cheese.utils import get_first_text_or_none
+from cheese.items import RecipeItem
 
 class NotImplementError(Exception):
     pass
@@ -58,7 +59,7 @@ class BaseSpider(CrawlSpider):
 
     @property
     def recipe(self):
-        return dict(url=self.url,
+        recipe_dict =  dict(url=self.url,
                     title=self.title,
                     main_picture=self.main_picture,
                     ingredients=self.ingredients,
@@ -71,11 +72,16 @@ class BaseSpider(CrawlSpider):
                     misc_text=self.misc_text
                 )
 
+        recipe = RecipeItem()
+        for (k,v) in recipe_dict.items():
+            recipe[k] = v
+        return recipe
+
     def get_first_text(self, xpath):
         return get_first_text_or_none(self.hxs, xpath)
 
 
     def parse(self, response):
         self._on_receive_html(response)
-        unicode_pprint.pprint(self.recipe)
+        return self.recipe
 
