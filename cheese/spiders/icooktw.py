@@ -9,8 +9,8 @@ class IcooktwSpider(BaseSpider):
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
     start_urls = [
             'http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116',
-            'http://icook.tw/recipes/15124', 'http://icook.tw/recipes/15074',
-            'http://icook.tw/recipes/14827'
+            #'http://icook.tw/recipes/15124', 'http://icook.tw/recipes/15074',
+            #'http://icook.tw/recipes/14827'
             ]
 
     """

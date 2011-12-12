@@ -26,3 +26,19 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
 }
 
+ITEM_PIPELINES = [
+    'cheese.pipelines.RecipePipeline',
+]
+
+def setup_django_env(path):
+    import imp
+    from django.core.management import setup_environ
+
+    f, filename, desc = imp.find_module('settings', [path])
+    project = imp.load_module('settings', f, filename, desc)
+
+    setup_environ(project)
+
+setup_django_env('/Users/ytsui/try/dumpling/rcheese/')
+
+
