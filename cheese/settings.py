@@ -18,7 +18,7 @@ USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 #http://groups.google.com/group/scrapy-users/browse_thread/thread/997f5dd39a9c670f
 #http://hidemyass.com/proxy-list/
 
-USE_PROXY = True
+USE_PROXY = False
 RANDOM_AGENT = True
 
 DOWNLOADER_MIDDLEWARES = {
@@ -31,8 +31,8 @@ MONGODB_PORT = 27017
 MONGODB_DB = 'thechef'
 MONGODB_COLLECTION = 'recipes'
 
-ITEM_PIPELINES = [
-    'cheese.pipelines.MongoDBPipeline',
-]
+#ITEM_PIPELINES = [
+#    'cheese.pipelines.MongoDBPipeline',
+#]
 
 
