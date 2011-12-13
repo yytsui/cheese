@@ -8,21 +8,23 @@ class DodocookSpider(RecipeBaseSpider):
     name = 'dodocook'
     start_urls = [
             'http://dodocook.com/recipe/854',
+            'http://dodocook.com/recipe/1074',
             ]
 
     def parse_list(self, response):
        pass
 
-    """
     def parse(self, response):
         self._on_receive_html(response)
+        """
         print self.title
         print self.main_picture
         unicode_pprint.pprint(self.ingredients)
         unicode_pprint.pprint(self.steps)
         unicode_pprint.pprint(self.tags)
         unicode_pprint.pprint(self.author)
-    """
+        """
+        unicode_pprint.pprint(self._recipe_raw_dict)
 
     @property
     def title(self):
@@ -54,6 +56,10 @@ class DodocookSpider(RecipeBaseSpider):
     @property
     def steps(self):
         ps = self.hxs.select('//div[@class="ProcedureBox2"]')
+        if len(ps) == 0:
+                print "z"*100
+                ps = self.hxs.select('//span[@class="Process"]')
+
         steps = []
         for i, p in enumerate(ps):
             lele = p.root

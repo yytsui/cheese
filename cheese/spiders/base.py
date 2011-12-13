@@ -58,8 +58,8 @@ class RecipeBaseSpider(CrawlSpider):
         raise NotImplementError
 
     @property
-    def recipe(self):
-        recipe_dict =  dict(url=self.url,
+    def _recipe_raw_dict(self):
+        return dict(url=self.url,
                     title=self.title,
                     main_picture=self.main_picture,
                     ingredients=self.ingredients,
@@ -72,8 +72,11 @@ class RecipeBaseSpider(CrawlSpider):
                     misc_text=self.misc_text
                 )
 
+
+    @property
+    def recipe(self):
         recipe = RecipeItem()
-        for (k,v) in recipe_dict.items():
+        for (k,v) in self._recipe_raw_dict.items():
             recipe[k] = v
         return recipe
 
