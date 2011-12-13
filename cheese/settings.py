@@ -26,8 +26,13 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
 }
 
+MONGODB_SERVER = 'localhost'
+MONGODB_PORT = 27017
+MONGODB_DB = 'thechef'
+MONGODB_COLLECTION = 'recipes'
+
 ITEM_PIPELINES = [
-    'cheese.pipelines.RecipePipeline',
+    'cheese.pipelines.MongoDBPipeline',
 ]
 
 def setup_django_env(path):
