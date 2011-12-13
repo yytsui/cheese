@@ -5,6 +5,9 @@ from scrapy import log
 from lxml import etree
 
 def get_free_proxy():
+    #TODO: set user-agent
+    #http://pzwart3.wdka.hro.nl/wiki/Simple_Web_Spider_in_Python
+
     url =  "http://hidemyass.com/proxy-list/search-225783/"
     parser = etree.HTMLParser()
     tree = etree.parse(url, parser)
@@ -31,6 +34,7 @@ class RandomUserAgentProxyMiddleware(object):
 
         if USE_PROXY:
             if self.count % 200 == 0:
+                #TODO: save proxies first time, and choose from there, mabybe only get proxies again after every 1000 times.
                 free_proxy = random.choice(get_free_proxy())
                 request.meta['proxy'] = free_proxy
                 log.msg("Change proxy to %s" % free_proxy, log.INFO)
