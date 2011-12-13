@@ -7,7 +7,7 @@ from cheese.items import RecipeItem
 class NotImplementError(Exception):
     pass
 
-class BaseSpider(CrawlSpider):
+class RecipeBaseSpider(CrawlSpider):
     name = 'base spider for interface purpose only'
 
     def parse_list(self, response):

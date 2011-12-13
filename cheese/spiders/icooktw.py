@@ -1,10 +1,10 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
-from base import BaseSpider
+from base import RecipeBaseSpider
 from cheese.utils import stringify_children, get_text_or_none
 
-class IcooktwSpider(BaseSpider):
+class IcooktwSpider(RecipeBaseSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
     start_urls = [
