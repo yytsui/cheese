@@ -13,11 +13,16 @@ class DodocookSpider(RecipeBaseSpider):
     def parse_list(self, response):
        pass
 
+    """
     def parse(self, response):
         self._on_receive_html(response)
         print self.title
         print self.main_picture
         unicode_pprint.pprint(self.ingredients)
+        unicode_pprint.pprint(self.steps)
+        unicode_pprint.pprint(self.tags)
+        unicode_pprint.pprint(self.author)
+    """
 
     @property
     def title(self):
@@ -48,49 +53,42 @@ class DodocookSpider(RecipeBaseSpider):
 
     @property
     def steps(self):
-        lis = self.hxs.select('//ul[@itemprop="instructions"]/li')
+        ps = self.hxs.select('//div[@class="ProcedureBox2"]')
         steps = []
-        for li in lis:
-            lele = li.root
-            order = lele.find('.//big').text
-            instruction = lele.find('.//p/span[@class="step-img"]')
-            if instruction is not None:
-                step =  stringify_children(lele.find('.//p')).strip()
-                big_picture = instruction.find('a').attrib['href']
-                small_picture = instruction.find('.//img').attrib['src']
+        for i, p in enumerate(ps):
+            lele = p.root
+            order = i
+            image = lele.find('.//img')
+            if image is not None:
+                big_picture = image.attrib['src']
             else:
-                #text only instruction
-                text_only_instruction = lele.find('.//p')
-                if text_only_instruction is not None:
-                    step = stringify_children(text_only_instruction).strip()
                 big_picture = None
-                small_picture = None
-        steps.append(dict(order=order, step=step, big_picture=big_picture, small_picture=small_picture))
+            instruction_ele = lele.find('.//pre')
+            instruction = get_text_or_none(instruction_ele)
+            steps.append(dict(order=order, instruction=instruction, big_picture=big_picture))
         return steps
-
 
 
     @property
     def tags(self):
-        tags = self.hxs.select('//div[@class="section list-of-recipes"]/ul/li/a/text()').extract()
-        _tags = []
+        tags = self.get_first_text('//span[@id="LabelRecipeTag"]/text()')
         if tags:
-            for tag in tags:
-                if len(tag.strip()) > 0:
-                    _tags.append(tag.strip())
+            _tags = tags.strip().split(' ')
+        else:
+            _tags = []
         return _tags
 
     @property
     def author(self):
-        return self.get_first_text('//span[@itemprop="author"]/text()')
+        return self.get_first_text('//a[@id="lnkAuthor2"]/text()')
 
     @property
     def view_count(self):
-        return self.get_first_text('//span[@class="view-count"]/text()')
+        return None
 
     @property
     def fav_count(self):
-        return self.get_first_text('//span[@class="fav-count"]/text()')
+        return None
 
     @property
     def comments(self):
