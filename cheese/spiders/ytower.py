@@ -1,8 +1,10 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
+from base import RecipeBaseSpider
+from cheese.utils import stringify_children, get_text_or_none, unicode_pprint
 
-class YtowerSpider(CrawlSpider):
+class YtowerSpider(RecipeBaseSpider):
     name = 'ytower'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
     start_urls = ['http://www.ytower.com.tw/recipe/iframe-recipe.asp?seq=A01-0840']
@@ -24,6 +26,7 @@ class YtowerSpider(CrawlSpider):
         pass
 
     #def parse_detail(self, response):
+    """
     def parse(self, response):
         url = response.url
         hxs = HtmlXPathSelector(response)
@@ -50,4 +53,67 @@ class YtowerSpider(CrawlSpider):
         for s in steps:
             print s
         print "url=>%s" % url
+
+    def parse(self, response):
+        self._on_receive_html(response)
+        unicode_pprint.pprint(self._recipe_raw_dict)
+    """
+
+    @property
+    def title(self):
+        return self.get_first_text('//span[@class="mv15pt80bk01"]/text()')
+
+    @property
+    def main_picture(self):
+        return self.get_first_text('//td[@height="25"]/img[@width="210"]/@src')
+
+    @property
+    def ingredients(self):
+        trs = self.hxs.select('//td[@width="200"]/table/tr')
+        ingredients = []
+        for tr in trs:
+            ele = tr.root # lxml element
+            section =  ele.find('.//td[@colspan="2"]/font')
+            section_name = get_text_or_none(section)
+            if section_name:
+                section_dict = dict(section=section_name,ings=[])
+                ingredients.append(section_dict)
+            ing = ele.find('.//td[@width="68%"]/a[@class="sh13pt_link"]')
+            ing_name = get_text_or_none(ing)
+            amount = ele.find('.//td[@width="32%"]')
+            ing_amount = get_text_or_none(amount)
+            if ing_name:
+                section_dict['ings'].append(dict(name=ing_name, amount=ing_amount))
+        return ingredients
+
+    @property
+    def steps(self):
+        steps = self.hxs.select('//span[@class="sh13pt"]/text()').extract() #step
+        return steps
+
+    @property
+    def tags(self):
+        return None
+
+    @property
+    def author(self):
+        return None
+
+    @property
+    def view_count(self):
+        return None
+
+    @property
+    def fav_count(self):
+        return None
+
+    @property
+    def comments(self):
+        return None
+
+    @property
+    def misc_text(self):
+        return None
+
+
 
