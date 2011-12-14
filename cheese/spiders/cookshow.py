@@ -2,7 +2,11 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
+from base import RecipeBaseSpider
+from cheese.utils import stringify_children, get_text_or_none, unicode_pprint
 
+
+"""
 def stringify_children(node):
     #http://stackoverflow.com/questions/4624062/get-all-text-inside-a-tag-in-lxml
     from itertools import chain
@@ -11,8 +15,9 @@ def stringify_children(node):
             [node.tail])
     # filter removes possible Nones in texts and tails
     return ''.join(filter(None, parts))
+"""
 
-class CookShowSpider(CrawlSpider):
+class CookShowSpider(RecipeBaseSpider):
     name = 'cookshow'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
     start_urls = [
@@ -24,7 +29,6 @@ class CookShowSpider(CrawlSpider):
             Rule(SgmlLinkExtractor(allow=r'recipe-search2.asp'), callback='parse_list', follow=True),
             Rule(SgmlLinkExtractor(allow=r'iframe-recipe.asp'), callback='parse_detail', follow=True),
     )
-    """
 
     def parse_list(self, response):
         #hxs = HtmlXPathSelector(response)
@@ -37,47 +41,87 @@ class CookShowSpider(CrawlSpider):
 
     #def parse_detail(self, response):
     def parse(self, response):
-        url = response.url
-        print "url=>%s" % url
-        hxs = HtmlXPathSelector(response)
-        title = hxs.select('//td[@class="text10-white-15-b"]/text()').extract()[0]
-        print "title=>%s" % title
+        self._on_receive_html(response)
+        unicode_pprint.pprint(self._recipe_raw_dict)
+    """
 
-        _main_pic = hxs.select('//img[@class="pp-cooklist-in3"]/@src').extract()
-        if _main_pic:
-            main_pic = _main_pic[0]
-            print "main-pic=>%s" % main_pic
+    @property
+    def title(self):
+        return self.get_first_text('//td[@class="text10-white-15-b"]/text()')
 
-        ingdivs = hxs.select('//table[@width="333"]/tr')
+    @property
+    def main_picture(self):
+        return self.get_first_text('//img[@class="pp-cooklist-in3"]/@src')
+
+    @property
+    def ingredients(self):
+        ingdivs = self.hxs.select('//table[@width="333"]/tr')
+        ingredients = []
+        principal_section = dict(section_name='principal', ings=[])
+        sauce_section = dict(section_name='sauce', ings=[])
         for idiv in ingdivs:
             ele = idiv.root
             ### ingredients
             ing = ele.find('.//td[@width="306"]')
-            if ing is not None:
-                print ing.text
+            ing_name = get_text_or_none(ing)
             amount = ele.find('.//td[@width="105"]')
-            if amount is not None:
-                print amount.text
+            ing_amount = get_text_or_none(amount)
+            if ing_name:
+                principal_section['ings'].append(dict(name=ing_name, amount=ing_amount))
 
             ### sauce
             ing = ele.find('.//td[@width="231"]')
-            if ing is not None:
-                print ing.text
+            ing_name = get_text_or_none(ing)
             amount = ele.find('.//td[@width="102"]')
-            if amount is not None:
-                print amount.text
+            ing_amount = get_text_or_none(amount)
+            if ing_name:
+                sauce_section['ings'].append(dict(name=ing_name, amount=ing_amount))
 
-        steptrs = hxs.select('//table[@class="box-cooklist-step"]/tr')
-        print len(steptrs)
+        ingredients = [principal_section, sauce_section]
+        return ingredients
 
+    @property
+    def steps(self):
+        steptrs = self.hxs.select('//table[@class="box-cooklist-step"]/tr')
+        steps = []
+        step_dict = dict(instruction=None, big_image=None)
         for tr in steptrs:
             _tr = tr.root
             step_img = _tr.find('.//img[@class="pp-cooktop3"]')
             if step_img is not None:
-                print step_img.attrib['src']
+                step_dict['big_image'] = step_img.attrib['src']
             step_text = _tr.find('.//td[@class="text08-12-bw"]')
             if step_text is not None:
-                print step_text.text
+                step_dict['instruction'] = step_text.text
+                steps.append(step_dict)
+                step_dict = dict(instruction=None, big_image=None)
+
+        return steps
+
+
+    @property
+    def tags(self):
+        return None
+
+    @property
+    def author(self):
+        return None
+
+    @property
+    def view_count(self):
+        return None
+
+    @property
+    def fav_count(self):
+        return None
+
+    @property
+    def comments(self):
+        return None
+
+    @property
+    def misc_text(self):
+        return None
 
 
 
