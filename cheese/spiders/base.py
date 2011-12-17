@@ -107,7 +107,7 @@ class RecipeBaseSpider(CrawlSpider):
         return get_first_text_or_none(self.hxs, xpath)
 
 
-    def parse_item(self, response):
+    def parse_detail(self, response):
         self._on_receive_html(response)
         return self.recipe
 

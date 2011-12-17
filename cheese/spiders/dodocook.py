@@ -11,8 +11,6 @@ class DodocookSpider(RecipeBaseSpider):
             'http://dodocook.com/recipe/1074',
             ]
 
-    def parse_list(self, response):
-       pass
 
     @property
     def title(self):
