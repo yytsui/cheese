@@ -88,7 +88,11 @@ class YtowerSpider(RecipeBaseSpider):
 
     @property
     def steps(self):
-        steps = self.hxs.select('//span[@class="sh13pt"]/text()').extract() #step
+        instructions= self.hxs.select('//span[@class="sh13pt"]/text()').extract() #step
+        steps = []
+        for i, ins in enumerate(instructions):
+            step = dict(order=i+1, instruction=ins, picture=None)
+            steps.append(step)
         return steps
 
     @property

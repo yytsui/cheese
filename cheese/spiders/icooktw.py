@@ -71,16 +71,14 @@ class IcooktwSpider(RecipeBaseSpider):
             instruction = lele.find('.//p/span[@class="step-img"]')
             if instruction is not None:
                 step =  stringify_children(lele.find('.//p')).strip()
-                big_picture = instruction.find('a').attrib['href']
-                small_picture = instruction.find('.//img').attrib['src']
+                step_picture = instruction.find('a').attrib['href']
             else:
                 #text only instruction
                 text_only_instruction = lele.find('.//p')
                 if text_only_instruction is not None:
                     step = stringify_children(text_only_instruction).strip()
-                big_picture = None
-                small_picture = None
-        steps.append(dict(order=order, step=step, big_picture=big_picture, small_picture=small_picture))
+                step_picture = None
+            steps.append(dict(order=order, instruction=step, picture=step_picture))
         return steps
 
 

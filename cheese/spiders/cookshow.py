@@ -84,17 +84,20 @@ class CookShowSpider(RecipeBaseSpider):
     def steps(self):
         steptrs = self.hxs.select('//table[@class="box-cooklist-step"]/tr')
         steps = []
-        step_dict = dict(instruction=None, big_image=None)
+        step_dict = dict(instruction=None, picture=None)
+        order = 0
         for tr in steptrs:
             _tr = tr.root
             step_img = _tr.find('.//img[@class="pp-cooktop3"]')
             if step_img is not None:
-                step_dict['big_image'] = step_img.attrib['src']
+                step_dict['picture'] = step_img.attrib['src']
             step_text = _tr.find('.//td[@class="text08-12-bw"]')
             if step_text is not None:
                 step_dict['instruction'] = step_text.text
+                order += 1
+                step_dict['order'] = order
                 steps.append(step_dict)
-                step_dict = dict(instruction=None, big_image=None)
+                step_dict = dict(instruction=None, picture=None)
 
         return steps
 

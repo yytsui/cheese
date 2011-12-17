@@ -19,3 +19,5 @@ class RecipeItem(Item):
     fav_count = Field()
     comments = Field()
     misc_text = Field()
+    #image_urls = Field()
+    #images = Field()

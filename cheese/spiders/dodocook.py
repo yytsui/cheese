@@ -49,15 +49,15 @@ class DodocookSpider(RecipeBaseSpider):
         steps = []
         for i, p in enumerate(ps):
             lele = p.root
-            order = i
+            order = i + 1
             image = lele.find('.//img')
             if image is not None:
-                big_picture = image.attrib['src']
+                picture = image.attrib['src']
             else:
-                big_picture = None
+                picture = None
             instruction_ele = lele.find('.//pre')
             instruction = get_text_or_none(instruction_ele)
-            steps.append(dict(order=order, instruction=instruction, big_picture=big_picture))
+            steps.append(dict(order=order, instruction=instruction, picture=picture))
         return steps
 
 
