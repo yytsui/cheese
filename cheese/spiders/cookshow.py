@@ -6,44 +6,16 @@ from base import RecipeBaseSpider
 from cheese.utils import stringify_children, get_text_or_none, unicode_pprint
 
 
-"""
-def stringify_children(node):
-    #http://stackoverflow.com/questions/4624062/get-all-text-inside-a-tag-in-lxml
-    from itertools import chain
-    parts = ([node.text] +
-            list(chain(*([c.text, c.tail] for c in node.getchildren()))) +
-            [node.tail])
-    # filter removes possible Nones in texts and tails
-    return ''.join(filter(None, parts))
-"""
-
 class CookShowSpider(RecipeBaseSpider):
     name = 'cookshow'
-    #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
-    start_urls = [
-            'http://www.cookshow.com.tw/foodlist-in3.php?P_Id=183'
-            ]
+    #start_urls = [ 'http://www.cookshow.com.tw/foodlist-in3.php?P_Id=183']
+    start_urls = [ 'http://www.cookshow.com.tw/newrecipe.php']
 
-    """
     rules = (
-            Rule(SgmlLinkExtractor(allow=r'recipe-search2.asp'), callback='parse_list', follow=True),
-            Rule(SgmlLinkExtractor(allow=r'iframe-recipe.asp'), callback='parse_detail', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'newrecipe.php'), callback='parse_list', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'foodlist-in3.php'), callback='parse_detail', follow=True),
     )
 
-    def parse_list(self, response):
-        #hxs = HtmlXPathSelector(response)
-        #i = CheeseItem()
-        #i['domain_id'] = hxs.select('//input[@id="sid"]/@value').extract()
-        #i['name'] = hxs.select('//div[@id="name"]').extract()
-        #i['description'] = hxs.select('//div[@id="description"]').extract()
-        #return i
-        pass
-
-    #def parse_detail(self, response):
-    def parse(self, response):
-        self._on_receive_html(response)
-        unicode_pprint.pprint(self._recipe_raw_dict)
-    """
 
     @property
     def title(self):

@@ -11,6 +11,7 @@ class RecipeBaseSpider(CrawlSpider):
     name = 'base spider for interface purpose only'
 
     def parse_list(self, response):
+        print "list page:",'='*50, response.url
         pass
 
     def _on_receive_html(self, response):
