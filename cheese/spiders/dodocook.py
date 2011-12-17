@@ -6,9 +6,15 @@ from cheese.utils import stringify_children, get_text_or_none, unicode_pprint
 
 class DodocookSpider(RecipeBaseSpider):
     name = 'dodocook'
-    start_urls = ['http://dodocook.com']
-    #start_urls = [ 'http://dodocook.com/recipe/854', 'http://dodocook.com/recipe/1074', ]
+    start_urls = ['http://dodocook.com/recipe/%d' % i for i in range(1,1200)]
+    #start_urls = ['http://dodocook.com/recipe/2000']
 
+    def parse(self, response):
+        self._on_receive_html(response)
+        if  not self.title:
+            return None
+        else:
+            return self.recipe
 
     @property
     def title(self):
