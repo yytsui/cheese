@@ -18,8 +18,8 @@ USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 #http://groups.google.com/group/scrapy-users/browse_thread/thread/997f5dd39a9c670f
 #http://hidemyass.com/proxy-list/
 
-USE_PROXY = False
-RANDOM_AGENT = False
+USE_PROXY = True
+RANDOM_AGENT = True
 
 DOWNLOADER_MIDDLEWARES = {
     'cheese.random_user_agent.RandomUserAgentProxyMiddleware': 400,
