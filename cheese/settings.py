@@ -31,8 +31,11 @@ MONGODB_PORT = 27017
 MONGODB_DB = 'thechef'
 MONGODB_COLLECTION = 'recipes'
 
-#ITEM_PIPELINES = [
-#    'cheese.pipelines.MongoDBPipeline',
-#]
+IMAGES_STORE = '/tmp'
+
+ITEM_PIPELINES = [
+    'scrapy.contrib.pipeline.images.ImagesPipeline',
+    'cheese.pipelines.MongoDBPipeline',
+]
 
 

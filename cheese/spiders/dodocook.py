@@ -19,6 +19,10 @@ class DodocookSpider(RecipeBaseSpider):
         return self.get_first_text('//span[@id="LabelRecipeName"]/text()')
 
     @property
+    def image_domain(self):
+        return  'dodocook.com'
+
+    @property
     def main_picture(self):
         return self.get_first_text('//img[@id="ImageRecipe"]/@src')
 

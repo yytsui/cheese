@@ -64,6 +64,11 @@ class YtowerSpider(RecipeBaseSpider):
         return self.get_first_text('//span[@class="mv15pt80bk01"]/text()')
 
     @property
+    def image_domain(self):
+        return  'www.ytower.com.tw'
+
+
+    @property
     def main_picture(self):
         return self.get_first_text('//td[@height="25"]/img[@width="210"]/@src')
 

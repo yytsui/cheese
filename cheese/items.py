@@ -6,8 +6,6 @@
 from scrapy.item import Item, Field
 
 class RecipeItem(Item):
-    # define the fields for your item here like:
-    # name = Field()
     url = Field()
     title = Field()
     main_picture = Field()
@@ -19,5 +17,5 @@ class RecipeItem(Item):
     fav_count = Field()
     comments = Field()
     misc_text = Field()
-    #image_urls = Field()
-    #images = Field()
+    image_urls = Field()
+    images = Field()
