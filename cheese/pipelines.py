@@ -43,6 +43,7 @@ class MongoDBPipeline(object):
 
 
 
+
 class IgnoreVisitedItems(object):
     """Middleware to ignore re-visiting item pages if they were already visited
     before. The requests to be filtered by have a meta['filter_visited'] flag
