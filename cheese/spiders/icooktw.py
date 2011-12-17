@@ -7,18 +7,17 @@ from cheese.utils import stringify_children, get_text_or_none
 class IcooktwSpider(RecipeBaseSpider):
     name = 'icooktw'
     #start_urls = ['http://www.ytower.com.tw/recipe/iframe-search.asp']
-    start_urls = [
-            'http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116',
+    #start_urls = [
+            #'http://icook.tw/recipes/15075', 'http://icook.tw/recipes/15116',
             #'http://icook.tw/recipes/15124', 'http://icook.tw/recipes/15074',
             #'http://icook.tw/recipes/14827'
-            ]
+            #]
+    start_urls = ['http://icook.tw/recipes/latest']
 
-    """
     rules = (
-            Rule(SgmlLinkExtractor(allow=r'recipe-search2.asp'), callback='parse_list', follow=True),
-            Rule(SgmlLinkExtractor(allow=r'iframe-recipe.asp'), callback='parse_detail', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'recipes/latest?'), callback='parse_list', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'recipes/\d+'), callback='parse_detail', follow=True),
     )
-    """
 
     def parse_list(self, response):
        pass

@@ -6,10 +6,8 @@ from cheese.utils import stringify_children, get_text_or_none, unicode_pprint
 
 class DodocookSpider(RecipeBaseSpider):
     name = 'dodocook'
-    start_urls = [
-            'http://dodocook.com/recipe/854',
-            'http://dodocook.com/recipe/1074',
-            ]
+    start_urls = ['http://dodocook.com']
+    #start_urls = [ 'http://dodocook.com/recipe/854', 'http://dodocook.com/recipe/1074', ]
 
 
     @property
