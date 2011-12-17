@@ -19,3 +19,5 @@ class RecipeItem(Item):
     misc_text = Field()
     image_urls = Field()
     images = Field()
+    visited_id = Field()
+    visit_status = Field()

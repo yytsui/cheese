@@ -34,6 +34,7 @@ MONGODB_COLLECTION = 'recipes'
 IMAGES_STORE = '/tmp'
 
 ITEM_PIPELINES = [
+    'cheese.pipelines.IgnoreVisitedItems',
     'scrapy.contrib.pipeline.images.ImagesPipeline',
     'cheese.pipelines.MongoDBPipeline',
 ]
