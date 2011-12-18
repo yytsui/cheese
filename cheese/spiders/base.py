@@ -3,16 +3,9 @@ from scrapy.contrib.spiders import CrawlSpider
 
 from cheese.utils import get_first_text_or_none
 from cheese.items import RecipeItem
-from scrapy.conf import settings
-import pymongo
+
 class NotImplementError(Exception):
     pass
-
-def get_mongo_collection():
-    connection = pymongo.Connection(settings['MONGODB_SERVER'], settings['MONGODB_PORT'])
-    db = connection[settings['MONGODB_DB']]
-    collection = db[settings['MONGODB_COLLECTION']]
-    return collection
 
 
 class RecipeBaseSpider(CrawlSpider):

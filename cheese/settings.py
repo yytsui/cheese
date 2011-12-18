@@ -22,6 +22,7 @@ USE_PROXY = True
 RANDOM_AGENT = True
 
 DOWNLOADER_MIDDLEWARES = {
+    'cheese.already_existed.NoOverWriteMiddleware': 399,
     'cheese.random_user_agent.RandomUserAgentProxyMiddleware': 400,
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
 }
@@ -39,4 +40,4 @@ ITEM_PIPELINES = [
     'cheese.pipelines.MongoDBPipeline',
 ]
 
-
+OVER_WRITE_EXISTED_RECORD = False
