@@ -19,12 +19,13 @@ def get_free_proxies():
         ip = p.find('td[2]/span').text
         port = p.find('td[3]').text.strip()
         http_proxy = 'http://%s:%s' % (ip, port)
+        http_proxy = 'http://132.72.23.11:3127'
         proxies.append(http_proxy)
     return proxies
 
 class RandomUserAgentProxyMiddleware(object):
     count = 0
-    free_proxies = get_free_proxies()
+    free_proxies = ['http://132.72.23.11:3127']
     ua = USER_AGENT_LIST[0]
     def process_request(self, request, spider):
         if RANDOM_AGENT:
@@ -38,8 +39,8 @@ class RandomUserAgentProxyMiddleware(object):
                 free_proxy = random.choice(self.free_proxies)
                 request.meta['proxy'] = free_proxy
                 log.msg("Change proxy to %s" % free_proxy, log.INFO)
-            if self.count % 2000 == 0:
-                self.free_proxy = get_free_proxies()
+            #if self.count % 2000 == 0:
+                #self.free_proxy = get_free_proxies()
         
         log.msg("Request Headers %s" % request.headers, log.INFO)
 
