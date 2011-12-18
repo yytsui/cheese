@@ -25,14 +25,12 @@ def get_free_proxies():
 class RandomUserAgentProxyMiddleware(object):
     count = 0
     free_proxies = get_free_proxies()
+    ua = USER_AGENT_LIST[0]
     def process_request(self, request, spider):
         if RANDOM_AGENT:
             if self.count % 200 == 0:
-                ua  = random.choice(USER_AGENT_LIST)
-        else:
-            ua = USER_AGENT_LIST[0]
-        if ua:
-            request.headers.setdefault('User-Agent', ua)
+                self.ua  = random.choice(USER_AGENT_LIST)
+        request.headers.setdefault('User-Agent', self.ua)
 
         if USE_PROXY:
             if self.count % 200 == 0:
@@ -42,7 +40,7 @@ class RandomUserAgentProxyMiddleware(object):
                 log.msg("Change proxy to %s" % free_proxy, log.INFO)
             if self.count % 2000 == 0:
                 self.free_proxy = get_free_proxies()
-        self.count += 1
+        
         log.msg("Request Headers %s" % request.headers, log.INFO)
 
 if __name__ == '__main__':
