@@ -20,7 +20,6 @@ class NoOverWriteMiddleware(object):
             return None
         else:
             if mongo_collection.find_one({'url': request.url}):
-                print "i"*100, request.url
                 log.msg("%s existed!, ignored." % request.url, log.INFO)
                 raise IgnoreRequest
 
