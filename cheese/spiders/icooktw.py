@@ -27,8 +27,8 @@ class IcooktwSpider(RecipeBaseSpider):
         return self.get_first_text('//h2[@itemprop="name"]/a/text()')
 
     @property
-    def image_domain(self):
-        return  None
+    def domain(self):
+        return 'icook.tw'
 
     @property
     def main_picture(self):

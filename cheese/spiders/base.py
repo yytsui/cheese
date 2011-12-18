@@ -60,7 +60,7 @@ class RecipeBaseSpider(CrawlSpider):
         raise NotImplementError
 
     @property
-    def image_domain(self):
+    def domain(self):
         raise NotImplementError
 
     def get_recipe_raw_dict(self):
@@ -74,7 +74,8 @@ class RecipeBaseSpider(CrawlSpider):
                     view_count=self.view_count,
                     fav_count=self.fav_count,
                     comments=self.comments,
-                    misc_text=self.misc_text
+                    misc_text=self.misc_text,
+                    domain=self.domain
                 )
 
     @property
@@ -96,7 +97,7 @@ class RecipeBaseSpider(CrawlSpider):
         if image_path.startswith('http'):
             return image_path
         else:
-            return 'http://%s%s' % (self.image_domain, image_path)
+            return 'http://%s%s' % (self.domain, image_path)
 
     @property
     def recipe(self):

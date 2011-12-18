@@ -20,7 +20,7 @@ class YtowerSpider(RecipeBaseSpider):
         return self.get_first_text('//span[@class="mv15pt80bk01"]/text()')
 
     @property
-    def image_domain(self):
+    def domain(self):
         return  'www.ytower.com.tw'
 
 

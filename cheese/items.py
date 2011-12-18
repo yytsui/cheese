@@ -7,6 +7,7 @@ from scrapy.item import Item, Field
 
 class RecipeItem(Item):
     url = Field()
+    domain = Field()
     title = Field()
     main_picture = Field()
     ingredients = Field()

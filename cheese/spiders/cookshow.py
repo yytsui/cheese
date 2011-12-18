@@ -22,7 +22,7 @@ class CookShowSpider(RecipeBaseSpider):
         return self.get_first_text('//td[@class="text10-white-15-b"]/text()')
 
     @property
-    def image_domain(self):
+    def domain(self):
         return  'www.cookshow.com.tw'
 
     @property
