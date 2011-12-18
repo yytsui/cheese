@@ -19,13 +19,13 @@ def get_free_proxies():
         ip = p.find('td[2]/span').text
         port = p.find('td[3]').text.strip()
         http_proxy = 'http://%s:%s' % (ip, port)
-        http_proxy = 'http://132.72.23.11:3127'
+        http_proxy = 'http://60.11.62.176:8088'
         proxies.append(http_proxy)
     return proxies
 
 class RandomUserAgentProxyMiddleware(object):
     count = 0
-    free_proxies = ['http://132.72.23.11:3127']
+    free_proxies = ['http://209.62.12.130:8118']
     ua = USER_AGENT_LIST[0]
     def process_request(self, request, spider):
         if RANDOM_AGENT:

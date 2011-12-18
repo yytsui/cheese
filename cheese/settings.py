@@ -19,7 +19,7 @@ USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 #http://hidemyass.com/proxy-list/
 
 USE_PROXY = True
-RANDOM_AGENT = True
+RANDOM_AGENT = False
 
 DOWNLOADER_MIDDLEWARES = {
     'cheese.already_existed.NoOverWriteMiddleware': 399,
