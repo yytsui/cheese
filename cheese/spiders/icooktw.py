@@ -16,7 +16,7 @@ class IcooktwSpider(RecipeBaseSpider):
 
     rules = (
             Rule(SgmlLinkExtractor(allow=r'recipes/latest?'), callback='parse_list', follow=True),
-            Rule(SgmlLinkExtractor(allow=r'recipes/\d+'), callback='parse_detail', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'recipes/\d+$'), callback='parse_detail', follow=True),
     )
 
     def parse_list(self, response):
