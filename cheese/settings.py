@@ -32,7 +32,10 @@ MONGODB_PORT = 27017
 MONGODB_DB = 'thechef'
 MONGODB_COLLECTION = 'recipes'
 
-IMAGES_STORE = '/tmp'
+import os.path
+CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+IMAGES_STORE =  '%s/image_store' % CURRENT_PATH
 
 ITEM_PIPELINES = [
     'cheese.pipelines.IgnoreVisitedItems',
