@@ -22,3 +22,4 @@ class RecipeItem(Item):
     images = Field()
     visited_id = Field()
     visit_status = Field()
+    image_download_completed = Field()

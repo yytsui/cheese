@@ -29,8 +29,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 MONGODB_SERVER = 'localhost'
 MONGODB_PORT = 27017
-MONGODB_DB = 'thechef'
+MONGODB_DB = 'thechef2'
 MONGODB_COLLECTION = 'recipes'
+MONGODB_UNIQ_KEY = 'url'
 
 import os.path
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -40,6 +41,7 @@ IMAGES_STORE =  '%s/image_store' % CURRENT_PATH
 ITEM_PIPELINES = [
     'cheese.pipelines.IgnoreVisitedItems',
     'scrapy.contrib.pipeline.images.ImagesPipeline',
+    'cheese.pipelines.ImageDownloadCompletedValidation',
     'cheese.pipelines.MongoDBPipeline',
 ]
 

@@ -14,6 +14,17 @@ from scrapy.utils.request import request_fingerprint
 
 from cheese.items import RecipeItem
 
+class ImageDownloadCompletedValidation(object):
+    def process_item(self, item, spider):
+        try:
+            item['image_download_completed'] = len(item['images']) == len(item['image_urls'])
+        except KeyError:
+            item['image_download_completed'] = False
+        if item['image_download_completed']:
+            log.msg("%s images downloaded success" % item['url'], level=log.DEBUG, spider=spider)
+        else:
+            log.msg("%s images downloaded failed!" % item['url'], level=log.DEBUG, spider=spider)
+        return item
 
 class MongoDBPipeline(object):
     def __init__(self):
@@ -33,7 +44,7 @@ class MongoDBPipeline(object):
                             upsert=True)  
         log.msg("Item wrote to MongoDB database %s/%s" %
                     (settings['MONGODB_DB'], settings['MONGODB_COLLECTION']),
-                    level=log.DEBUG, spider=spider)  
+                    level=log.DEBUG, spider=spider)
         return item
 
     def __get_uniq_key(self):
