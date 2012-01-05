@@ -55,7 +55,15 @@ def check_url_uniquness():
             raise
     print "url uniquness check pass."
 
+def count_total():
+    connection = pymongo.Connection(MONGODB_SERVER, MONGODB_PORT)
+    db = connection[MONGODB_DB]
+    total = db.recipes.find().count()
+    image_download_not_completed = db.recipes.find({'image_download_completed': False}).count()
+    print "total %d, image_download_not_completed %d, failed rate %.2f%%" % (total, image_download_not_completed, float(image_download_not_completed)/total * 100)
+
 
 if __name__ == '__main__':
     #check_pictures()
-    check_url_uniquness()
+    #check_url_uniquness()
+    count_total()
