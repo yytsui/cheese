@@ -3,7 +3,7 @@ import os.path
 
 MONGODB_SERVER = 'localhost'
 MONGODB_PORT = 27017
-MONGODB_DB = 'thechef'
+MONGODB_DB = 'thechef2'
 MONGODB_COLLECTION = 'recipes'
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -44,6 +44,18 @@ def check_pictures():
         print "-" * 100
 
 
+def check_url_uniquness():
+    connection = pymongo.Connection(MONGODB_SERVER, MONGODB_PORT)
+    db = connection[MONGODB_DB]
+    for r in db.recipes.find():
+        try:
+            assert db.recipes.find({'url': r['url']}).count() == 1
+        except AssertionError:
+            print '%s failed to pass uniquness test' % r['url']
+            raise
+    print "url uniquness check pass."
+
 
 if __name__ == '__main__':
-    check_pictures()
+    #check_pictures()
+    check_url_uniquness()
