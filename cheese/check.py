@@ -63,7 +63,18 @@ def count_total():
     print "total %d, image_download_not_completed %d, failed rate %.2f%%" % (total, image_download_not_completed, float(image_download_not_completed)/total * 100)
 
 
+def check_no_images():
+    connection = pymongo.Connection(MONGODB_SERVER, MONGODB_PORT)
+    db = connection[MONGODB_DB]
+    count = 0
+    for r in db.recipes.find():
+        if len(r['images']) == 0:
+            count += 1
+
+    print '%d recipes do not have any images!' % count
+
 if __name__ == '__main__':
     #check_pictures()
     #check_url_uniquness()
     count_total()
+    check_no_images()

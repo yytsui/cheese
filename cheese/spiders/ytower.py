@@ -26,7 +26,7 @@ class YtowerSpider(RecipeBaseSpider):
 
     @property
     def main_picture(self):
-        return self.get_first_text('//td[@height="25"]/img[@width="210"]/@src')
+        return self.get_first_text('//span[@class="mv12pt60bk06"]/img[@border="1"]/@src')
 
     @property
     def ingredients(self):
