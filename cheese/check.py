@@ -1,5 +1,6 @@
 import pymongo
 import os.path
+import os
 
 MONGODB_SERVER = 'localhost'
 MONGODB_PORT = 27017
@@ -55,12 +56,14 @@ def check_url_uniquness():
             raise
     print "url uniquness check pass."
 
-def count_total():
+def count_stat():
     connection = pymongo.Connection(MONGODB_SERVER, MONGODB_PORT)
     db = connection[MONGODB_DB]
     total = db.recipes.find().count()
     image_download_not_completed = db.recipes.find({'image_download_completed': False}).count()
-    print "total %d, image_download_not_completed %d, failed rate %.2f%%" % (total, image_download_not_completed, float(image_download_not_completed)/total * 100)
+    percentage = float(image_download_not_completed)/total * 100
+    print "total %d, image_download_not_completed %d, failed rate %.2f%%" % (total, image_download_not_completed, percentage )
+    return percentage
 
 
 def check_no_images():
@@ -72,9 +75,23 @@ def check_no_images():
             count += 1
 
     print '%d recipes do not have any images!' % count
+    return count
+
+
+def keep_running():
+    count = 0
+    while count_stat() > 1 or check_no_images() > 100 :
+        os.system('scrapy crawl ytower')
+        os.system('scrapy crawl icooktw')
+        os.system('scrapy crawl cookshow')
+        os.system('scrapy crawl dodocook')
+        count += 1
+        print "="*200,
+        print "finished %d run" % count
 
 if __name__ == '__main__':
     #check_pictures()
     #check_url_uniquness()
-    count_total()
-    check_no_images()
+    #count_stat()
+    #check_no_images()
+    keep_running()

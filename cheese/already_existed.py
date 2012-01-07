@@ -19,7 +19,10 @@ class NoOverWriteMiddleware(object):
         if OVER_WRITE_EXISTED_RECORD:
             return None
         else:
-            if mongo_collection.find_one({'url': request.url, 'image_download_completed':True}):
-                log.msg("%s existed and image download completed!, ignored." % request.url, log.INFO)
-                raise IgnoreRequest
+            already_existed_record = mongo_collection.find_one({'url': request.url, 'image_download_completed':True})
+            if already_existed_record:
+                if len(already_existed_record['images']) > 0: #TODO: add a flag in setting to switch this
+                    log.msg("%s existed and image download completed!, ignored." % request.url, log.INFO)
+                    raise IgnoreRequest
+            return None
 
