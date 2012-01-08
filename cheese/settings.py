@@ -39,7 +39,7 @@ CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE =  '%s/image_store' % CURRENT_PATH
 
 ITEM_PIPELINES = [
-    'cheese.pipelines.IgnoreVisitedItems',
+    #'cheese.pipelines.IgnoreVisitedItems',
     'scrapy.contrib.pipeline.images.ImagesPipeline',
     'cheese.pipelines.ImageDownloadCompletedValidation',
     'cheese.pipelines.MongoDBPipeline',

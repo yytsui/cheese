@@ -12,10 +12,15 @@ class IcooktwSpider(RecipeBaseSpider):
             #'http://icook.tw/recipes/15124', 'http://icook.tw/recipes/15074',
             #'http://icook.tw/recipes/14827'
             #]
-    start_urls = ['http://icook.tw/recipes/latest']
+    start_urls = [#'http://icook.tw/recipes/latest',
+            #'http://icook.tw/recipes/popular?order=overall',
+                'http://icook.tw/',
+            ]
 
     rules = (
             Rule(SgmlLinkExtractor(allow=r'recipes/latest?'), callback='parse_list', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'recipes/popular?'), callback='parse_list', follow=True),
+            Rule(SgmlLinkExtractor(allow=r'categories/\d+$'), callback='parse_list', follow=True),
             Rule(SgmlLinkExtractor(allow=r'recipes/\d+$'), callback='parse_detail', follow=True),
     )
 

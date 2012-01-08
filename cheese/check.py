@@ -1,6 +1,7 @@
 import pymongo
 import os.path
 import os
+import sys
 
 MONGODB_SERVER = 'localhost'
 MONGODB_PORT = 27017
@@ -80,18 +81,29 @@ def check_no_images():
 
 def keep_running():
     count = 0
-    while count_stat() > 1 or check_no_images() > 100 :
-        os.system('scrapy crawl ytower')
-        os.system('scrapy crawl icooktw')
-        os.system('scrapy crawl cookshow')
-        os.system('scrapy crawl dodocook')
+    fail_percentage = count_stat()
+    number_of_no_images = check_no_images()
+    while fail_percentage > 1 or number_of_no_images > 100:
+        os.system('scrapy crawl ytower --logfile=/tmp/crawl.log')
+        #os.system('scrapy crawl icooktw')
+        #os.system('scrapy crawl cookshow')
+        #os.system('scrapy crawl dodocook')
         count += 1
-        print "="*200,
         print "finished %d run" % count
+        print "-"*150
+        fail_percentage = count_stat()
+        number_of_no_images = check_no_images()
+
 
 if __name__ == '__main__':
     #check_pictures()
     #check_url_uniquness()
     #count_stat()
     #check_no_images()
-    keep_running()
+    if len(sys.argv) > 1 and sys.argv[1] == '-c':
+        print 'checking...'
+        check_url_uniquness()
+        count_stat()
+        check_no_images()
+    else:
+        keep_running()

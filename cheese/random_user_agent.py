@@ -25,7 +25,11 @@ def get_free_proxies():
 
 class RandomUserAgentProxyMiddleware(object):
     count = 0
-    free_proxies = ['http://209.62.12.130:8118']
+    #free_proxies = ['http://209.62.12.130:8118']
+    #http://spys.ru/en/
+    #http://spys.ru/en/anonymous-proxy-list/
+    #free_proxies = ['http://211.86.157.95:3128', 'http://213.234.239.90:3128', 'http://190.255.49.38:6588']
+    free_proxies = ['http://213.234.239.90:3128']
     ua = USER_AGENT_LIST[0]
     def process_request(self, request, spider):
         if RANDOM_AGENT:

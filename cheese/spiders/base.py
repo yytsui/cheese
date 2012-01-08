@@ -3,6 +3,7 @@ from scrapy.contrib.spiders import CrawlSpider
 
 from cheese.utils import get_first_text_or_none
 from cheese.items import RecipeItem
+from scrapy import log
 
 class NotImplementError(Exception):
     pass
@@ -12,7 +13,7 @@ class RecipeBaseSpider(CrawlSpider):
     name = 'base spider for interface purpose only'
 
     def parse_list(self, response):
-        print "list page:",'='*50, response.url
+        log.msg("List page:%s" % response.url, log.INFO)
         pass
 
     def _on_receive_html(self, response):
